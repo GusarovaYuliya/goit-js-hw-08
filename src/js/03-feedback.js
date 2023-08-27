@@ -4,7 +4,7 @@ const form = document.querySelector('.feedback-form');
 const KEY_FORM_INPUT = 'feedback-form-state';
 
 form.addEventListener('submit', onFormSubmit);
-form.addEventListener('input', throttle(onInputData, 500));
+form.addEventListener('input', throttle(onInputData,500));
 console.dir(form);
 console.dir(form.elements.email.value);
 
