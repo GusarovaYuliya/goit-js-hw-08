@@ -38,12 +38,14 @@ function onFormSubmit(evt) {
     const {
         elements: { email, message },
     } = evt.currentTarget;
-
-    if (email.value.trim() === "" || message.value.trim() === "") {
+  
+    const emailTrim = email.value.trim();
+    const messageTrim = message.value.trim();
+    if (emailTrim === "" || messageTrim === "") {
         alert("Заповніть всі поля")
         return;
     }
-    const outputData = { email: email.value.trim(), message: message.value.trim() };
+    const outputData = { email: emailTrim, message: messageTrim };
     console.log(outputData);
     // console.log(email.value);
     // console.log(message.value);
