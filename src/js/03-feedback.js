@@ -1,36 +1,52 @@
-// import
+import { throttle } from "lodash.throttle";
 
-// const feedbackForm = document.querySelector(".feedback-form");
-// const emailInput  = document.querySelector(".email");
-// const messageInput  = document.querySelector(".message");
+const form = document.querySelector('.feedback-form');
+const KEY_FORM_INPUT = 'feedback-form-state';
 
-// Відстежуй на формі подію input, і щоразу записуй у локальне сховище об'єкт з полями email і message
-// const saveToLocalStorage =
+form.addEventListener('submit', onFormSubmit);
+form.addEventListener('input', throttle(onInputData, 500));
+console.dir(form);
+console.dir(form.elements.email.value);
 
-// у яких зберігай поточні значення полів форми
-// emailInput.addEventListener('input', saveToLocalStorage);
-// messageInput.addEventListener('input', saveToLocalStorage);
+showData();
 
-// Нехай ключем для сховища буде рядок "feedback-form-state".
-// Під час завантаження сторінки перевіряй стан сховища, і якщо там є збережені дані, заповнюй ними поля форми. В іншому випадку поля повинні бути порожніми.
-// const savedData  = localStorage.getItem("feedback-form-state");
-// if(savedData) {
-//     const { email, message } = JSON.parse(savedData);
-
+function onInputData(evt) {
+    const {
+        elements: { email, message },
+    } = form;
     
-// }
+    const dataForm = { email: email.value, message: message.value };
+    localStorage.setItem(KEY_FORM_INPUT, JSON.stringify(dataForm));
+    // console.log(email.value);
+    // console.log(message.value);
+}
 
-// Під час сабміту форми очищуй сховище і поля форми,
+function showData() {
+    let dataForm = JSON.parse(localStorage.getItem(KEY_FORM_INPUT));
+    if (dataForm) {
+        const {
+            elements: { email, message },
+        } = form;
+        email.value = dataForm.email; 
+        message.value = dataForm.message;
+    }
+    console.log(dataForm);
+} 
 
-// feedbackForm.addEventListener('submit', (event) => {
-//     event.preventDefault();
-//     localStorage.removeItem("feedback-form-state");
-//     emailInput.value = "";
-//     messageInput.value = "";
-// })
+function onFormSubmit(evt) {
+    evt.preventDefault();
+    const {
+        elements: { email, message },
+    } = evt.currentTarget;
 
-
-//  а також виводь у консоль об'єкт з полями email, message та їхніми поточними значеннями.
-
-// console.log(emailInput.value);
-// console.log(messageInput.value)
+    if (email.value.trim() === "" || message.value.trim() === "") {
+        alert("Заповніть всі поля")
+        return;
+    }
+    const outputData = { email: email.value.trim(), message: message.value.trim() };
+    console.log(outputData);
+    // console.log(email.value);
+    // console.log(message.value);
+    evt.currentTarget.reset()
+    localStorage.removeItem(KEY_FORM_INPUT)
+}

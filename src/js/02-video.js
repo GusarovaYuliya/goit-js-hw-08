@@ -1,8 +1,6 @@
 import Player from '@vimeo/player';
-console.log(Player);
-
 import throttle from 'lodash.throttle';
-console.log(throttle);
+
 
 const CURRENT_TIME_KEY = 'videoplayer-current -time';
 
