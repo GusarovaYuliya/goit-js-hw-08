@@ -1,19 +1,23 @@
 import Player from '@vimeo/player';
 import throttle from 'lodash.throttle';
 
-// Ініціалізуй плеєр у файлі скрипта
+
+const CURRENT_TIME_KEY = 'videoplayer-current -time';
+
 const iframe = document.querySelector('iframe');
-    const player = new Vimeo.Player(iframe);
+const player = new Player(iframe, {
+loop: true,
+fullscreen: true,
+quality: '1080', 
+});
 
-    player.on('play', function() {
-        console.log('played the video!');
-    });
+const getCurrentTime = function (currentTime) {
+    const seconds = currentTime.seconds;
+    localStorage.setItem(CURRENT_TIME_KEY, JSON.stringify(seconds));
+};
+    player.on('timeupdate', throttle(getCurrentTime, 1000));
 
-    player.getVideoTitle().then(function(title) {
-        console.log('title:', title);
-    });
-// const player  = new Player("vimeo-player");
+    player.setCurrentTime((localStorage.getItem(URRENT_TIME_KEY)) || 0);
 
-// почни відстежувати подію timeupdate - оновлення часу відтворення.
 
 
